@@ -101,7 +101,7 @@ func (s *Server) Handler(conn net.Conn) {
 		select {
 		case <-isLive:
 			// 重置定时器，不做任何事情，为了激活下面的定时器
-		case <-time.After(time.Second * 10):
+		case <-time.After(time.Second * 100):
 			// 说明已经超时，将当前客户端强制下线
 			user.sendMsg("you are down by timeAfter")
 			close(user.C)

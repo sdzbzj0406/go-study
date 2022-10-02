@@ -91,8 +91,33 @@ func (u *User) DoMessage(msg string) {
 			u.server.mapLock.Unlock()
 
 			u.Name = newName
-			u.sendMsg("has update name:" + newName)
+			u.sendMsg("has update name:" + newName + "\n")
 		}
+	} else if len(msg) > 4 && msg[:3] == "to|" {
+		// 私聊信息
+		// 1.获取用户名
+		remoteName := strings.Split(msg, "|")[1]
+		if remoteName == "" {
+			u.sendMsg("msg format error,please check")
+			return
+		}
+		// 2.得到user对象
+		remoteUser, ok := u.server.OnlineMap[remoteName]
+		if !ok {
+			u.sendMsg("user not exist")
+			return
+		}
+
+		// 3.获取消息内容
+		content := strings.Split(msg, "|")[2]
+		if content == "" {
+			u.sendMsg("no content in msg")
+			return
+		}
+
+		// 4.通过user对象发送消息
+		remoteUser.sendMsg(u.Name + " say : " + content)
+
 	} else {
 		u.server.BroadCast(u, msg)
 	}
