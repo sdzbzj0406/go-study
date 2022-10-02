@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-// 类字母大写，其他包也可以访问
+// Hero 类字母大写，其他包也可以访问
 type Hero struct {
 
 	// 属性大写，其他包可以访问
