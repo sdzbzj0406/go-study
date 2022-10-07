@@ -1,6 +1,9 @@
 package main
 
-import "github.com/kataras/iris/v12"
+import (
+	"fmt"
+	"github.com/kataras/iris/v12"
+)
 
 func main() {
 	app := iris.New()
@@ -13,6 +16,8 @@ func main() {
 		booksAPI.Get("/", list)
 		// POST: http://localhost:8080/books
 		booksAPI.Post("/", create)
+
+		booksAPI.Get("/{name}", getBook)
 	}
 
 	app.Listen(":8080")
@@ -53,4 +58,11 @@ func create(ctx iris.Context) {
 	println("Received Book: " + b.Title)
 
 	ctx.StatusCode(iris.StatusCreated)
+}
+
+func getBook(ctx iris.Context) {
+
+	name := ctx.Params().Get("name")
+	fmt.Println("name:", name)
+	ctx.WriteString("name: " + name)
 }
